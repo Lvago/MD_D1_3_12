@@ -18,8 +18,6 @@ library(dplyr)
 accidents <- read.csv("2022_accidents_gu_bcn.csv")
 
 persones <- read.csv("2022_accidents_persones_gu_bcn.csv")
-
-vehicles <- read.csv("2022_accidents_vehicles_gu_bcn.csv")
 ```
 
 
@@ -29,15 +27,13 @@ vehicles <- read.csv("2022_accidents_vehicles_gu_bcn.csv")
 # Obtener los nombres de las columnas de cada tabla
 colnames_accidents <- colnames(accidents)
 colnames_persones <- colnames(persones)
-colnames_vehicles <- colnames(vehicles)
 
 # Encontrar los nombres de columna comunes a todas las tablas
-common_names <- Reduce(intersect, list(colnames_accidents, colnames_persones, colnames_vehicles))
+common_names <- Reduce(intersect, list(colnames_accidents, colnames_persones))
 
 # Nombres de columna únicos en cada tabla
 unique_names_accidents <- setdiff(colnames_accidents, common_names)
 unique_names_persones <- setdiff(colnames_persones, common_names)
-unique_names_vehicles <- setdiff(colnames_vehicles, common_names)
 ```
 
 # Here we print the results in order to visualize the different columns
@@ -57,18 +53,13 @@ print(unique_names_persones)
 ```
 
 
-```{r}
-print("Nombres de columna únicos en vehicles:")
-print(unique_names_vehicles)
-```
+
 #Here we are pre merging the data in order to get the colums with the same value but different name
 ```{r}
 key_column <- "Numero_expedient"
 
 # Fusiona les taules
 merged_data <- merge(accidents, persones, by = key_column)
-merged_data <- merge(merged_data, vehicles, by = key_column)
-
 # Imprimeix les primeres files del resultat
 head(merged_data)
 
@@ -106,11 +97,6 @@ What i'm doing here is removing the colums of persones and vehicles that already
 repetits <- setdiff(common_names, "Numero_expedient")
 persones <- persones %>%
   select(-any_of(repetits))
-
-
-
-vehicles <- vehicles %>%
-  select(-any_of(repetits))
 ```
 
 #Now we are merging the 3 filtered datasets. With this we get a dataset that only contains columns with different names. BUT there is still repeated columns that have different names. 
@@ -119,8 +105,6 @@ key_column <- "Numero_expedient"
 
 # Fusiona les taules
 merged_data <- merge(accidents, persones, by = key_column)
-merged_data <- merge(merged_data, vehicles, by = key_column)
-
 # Imprimeix les primeres files del resultat
 head(merged_data)
 
