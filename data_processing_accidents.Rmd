@@ -81,11 +81,11 @@ find_duplicate_columns <- function(dataframe) {
 }
 
 # Detectar columnas con los mismos valores
-columnas_con_valores_iguales <- find_duplicate_columns(merged_data)
+#columnas_con_valores_iguales <- find_duplicate_columns(merged_data)
 
 # Imprimir el resultado
-print("Columnas con los mismos valores:")
-print(columnas_con_valores_iguales)
+#print("Columnas con los mismos valores:")
+#print(columnas_con_valores_iguales)
 
 ```
 
@@ -115,7 +115,7 @@ head(merged_data)
 ##Now we are deleting the repeated columns.
 ```{r}
 # Eliminar las columnas con los mismos valores
-merged_data <- merged_data[, !(names(merged_data) %in% columnas_con_valores_iguales)]
+#merged_data <- merged_data[, !(names(merged_data) %in% columnas_con_valores_iguales)]
 
 ```
 
@@ -154,13 +154,11 @@ print(num_expedients_diferents)
 #Missing data
 ```{r}
 missing_counts <- sapply(merged_data, function(x) sum(x == "Desconegut", na.rm = TRUE))
-
 # Calculate total number of rows
 total_rows <- nrow(merged_data)
 
 # Calculate percentage of missing values per column
 missing_percentages <- (missing_counts / total_rows) * 100
-
 # Combine results into a dataframe
 missing_data_summary <- data.frame(
   Column = names(merged_data),
@@ -176,6 +174,23 @@ write.csv(missing_data_summary, "missing_data_summary.csv", row.names = FALSE)
 
 
 ```
+```{r}
+# Missing data plot
+missing_per_individual <- rowSums(is.na(merged_data) | merged_data == "Desconegut")
+frequency_values <- table(missing_per_individual)
+
+print(frequency_values)
+
+barplot(table(missing_per_individual),
+        main = "Frecuencia de valores faltantes por individuo",
+        xlab = "Número de valores faltantes por individuo",
+        ylab = "Frecuencia",
+        col = "skyblue")
+
+
+
+```
+
 
 
 ```{r}
