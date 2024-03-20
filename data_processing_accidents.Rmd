@@ -15,9 +15,9 @@ library(dplyr)
 
 ##load files
 ```{r}
-accidents <- read.csv("2022_accidents_gu_bcn.csv")
+accidents <- read.csv("2022-data/2022_accidents_gu_bcn.csv")
 
-persones <- read.csv("2022_accidents_persones_gu_bcn.csv")
+persones <- read.csv("2022-data/2022_accidents_persones_gu_bcn.csv")
 ```
 
 
@@ -64,7 +64,7 @@ merged_data <- merge(accidents, persones, by = key_column)
 head(merged_data)
 
 ```
-##Here we are detecting duplicates. We'll quem 'em for later
+##Here we are detecting duplicates. We'll keep them for later
 ```{r}
 # Función para encontrar columnas con los mismos valores
 find_duplicate_columns <- function(dataframe) {
@@ -81,11 +81,11 @@ find_duplicate_columns <- function(dataframe) {
 }
 
 # Detectar columnas con los mismos valores
-#columnas_con_valores_iguales <- find_duplicate_columns(merged_data)
+columnas_con_valores_iguales <- find_duplicate_columns(merged_data)
 
 # Imprimir el resultado
-#print("Columnas con los mismos valores:")
-#print(columnas_con_valores_iguales)
+print("Columnas con los mismos valores:")
+print(columnas_con_valores_iguales)
 
 ```
 
@@ -99,7 +99,7 @@ persones <- persones %>%
   select(-any_of(repetits))
 ```
 
-#Now we are merging the 3 filtered datasets. With this we get a dataset that only contains columns with different names. BUT there is still repeated columns that have different names. 
+#Now we are merging the 2 filtered datasets. With this we get a dataset that only contains columns with different names. BUT there is still repeated columns that have different names. 
 ```{r}
 key_column <- "Numero_expedient"
 
@@ -115,7 +115,7 @@ head(merged_data)
 ##Now we are deleting the repeated columns.
 ```{r}
 # Eliminar las columnas con los mismos valores
-#merged_data <- merged_data[, !(names(merged_data) %in% columnas_con_valores_iguales)]
+merged_data <- merged_data[, !(names(merged_data) %in% columnas_con_valores_iguales)]
 
 ```
 
@@ -132,13 +132,102 @@ num_cuantitativas <- sum(sapply(merged_data, is.numeric))
 print(paste("Número de variables categóricas:", num_categoricas))
 print(paste("Número de variables cuantitativas:", num_cuantitativas))
 ```
-##As we can see there are 25 categoric and 16 numeric. But one of the categoric is MALE/FEMALE and that is a binary var. In order to fullfill the dataset requirements we need one more binary bar. We've decided that the binary bar will be if it is a Bicicle accident or not. 
+##As we can see there are 18 categoric and 16 numeric. But one of the categoric is MALE/FEMALE and that is a binary var. In order to fullfill the dataset requirements we need one more binary bar. We've decided that the binary bar will be if it is a Bicicle accident or not. 
 
 ```{r}
 # Crear la nova columna
 merged_data <- merged_data %>%
   mutate(Accident_en_bicicleta = ifelse(Desc_Tipus_vehicle_implicat == "Bicicleta", 1, 0))
 ```
+
+### Esborrem la ultima columna problemàtica
+```{r}
+# Assuming merged_data is your data frame
+columns_to_remove <- c("Num_postal_caption")
+merged_data <- merged_data[ , !(names(merged_data) %in% columns_to_remove)]
+```
+#Generar csv
+```{r}
+
+# Generem el csv
+write.csv(merged_data, "merged_data.csv", row.names = FALSE)
+
+```
+
+##Renaming de les columnes
+```{r}
+# List of new column names
+new_column_names <- c("nExp", "cDis", "nDis", "cBar", "nBar", "cCar", "nCar", "dSet", "nMes", "dia", "hora", "torn", "causa", "morts", "lesLl", "lesGr", "vict", "vehi", "UTMX", "UTMY", "long", "lat", "nPos", "any", "mes", "dTVehImp", "sexe", "edat", "dTPers", "dLlAtrVia", "dMotDesVia", "dMotDespCon", "dVict", "accbici")
+
+# Assuming merged_data is your dataframe
+names(merged_data) <- new_column_names
+
+```
+
+###PCA
+```{r}
+library(tidyverse) # For data manipulation
+library(factoextra) # For easy visualization of PCA results
+
+merged_data$edat <- as.numeric(as.character(merged_data$edat))
+# Selecting only the relevant columns for PCA
+pca_data <- merged_data %>%
+  select(morts, lesLl, lesGr, vict, vehi, edat) %>%
+  na.omit() # Removing rows with any missing values
+
+# Standardizing the data: Important for PCA to treat all variables equally
+pca_data_scaled <- scale(pca_data)
+
+# Running PCA
+pca_result <- prcomp(pca_data_scaled, center = TRUE, scale. = TRUE)
+
+# Summary of PCA result
+summary(pca_result)
+
+# Plotting the variance explained by each principal component
+fviz_eig(pca_result)
+
+# For a more detailed view, including the contributions of original variables to the principal components:
+fviz_pca_var(pca_result, col.var = "cos2", 
+             gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"), 
+             repel = TRUE) # Cos2 shows the quality of representation
+
+```
+
+#mca
+
+```{r}
+install.packages("FactoMineR")
+install.packages("factoextra")
+library(FactoMineR)
+library(factoextra)
+# Assuming merged_data is your data frame and contains the categorical variables for MCA
+# Let's say cDis, nDis, causa, sexe, dTVehImp are the columns you want to include in MCA
+
+# Selecting only the relevant categorical columns for MCA
+mca_data <- merged_data %>%
+  select(nExp, nDis, nBar, nCar, dSet,  causa, sexe, dTVehImp) %>%
+  na.omit()  # Make sure to handle NAs according to your specific needs
+
+# Performing MCA
+mca_results <- MCA(mca_data, graph = FALSE)
+
+# Summary of the MCA results
+summary(mca_results)
+
+# Plotting the results
+# Visualize dimensions 1 and 2
+fviz_mca_biplot(mca_results, repel = TRUE)
+
+# For individual points
+fviz_mca_ind(mca_results, col.ind = "cos2", gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"), repel = TRUE)
+
+# For variable categories
+fviz_mca_var(mca_results, col.var = "cos2", gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"), repel = TRUE)
+
+```
+
+
 
 
 ##Count the number of expedients
