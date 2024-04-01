@@ -69,6 +69,7 @@ head(merged_data)
 # Función para encontrar columnas con los mismos valores
 find_duplicate_columns <- function(dataframe) {
   duplicate_columns <- vector()
+  dataframe <- as.data.frame(lapply(dataframe, as.character), stringsAsFactors = FALSE)
   for (i in 1:(ncol(dataframe) - 1)) {
     for (j in (i + 1):ncol(dataframe)) {
       if (all(dataframe[, i] == dataframe[, j])) {
@@ -146,21 +147,23 @@ merged_data <- merged_data %>%
 columns_to_remove <- c("Num_postal_caption")
 merged_data <- merged_data[ , !(names(merged_data) %in% columns_to_remove)]
 ```
-#Generar csv
-```{r}
-
-# Generem el csv
-write.csv(merged_data, "merged_data.csv", row.names = FALSE)
-
-```
 
 ##Renaming de les columnes
 ```{r}
 # List of new column names
-new_column_names <- c("nExp", "cDis", "nDis", "cBar", "nBar", "cCar", "nCar", "dSet", "nMes", "dia", "hora", "torn", "causa", "morts", "lesLl", "lesGr", "vict", "vehi", "UTMX", "UTMY", "long", "lat", "nPos", "any", "mes", "dTVehImp", "sexe", "edat", "dTPers", "dLlAtrVia", "dMotDesVia", "dMotDespCon", "dVict", "accbici")
+new_column_names <- c("nExp", "cDis", "nDis", "cBar", "nBar", "cCar", "nCar", "dSet", "any", "nMes", "mes", "dia", "hora", "torn", "causa", "morts", "lesLl", "lesGr", "vict", "vehi", "UTMX", "UTMY", "long", "lat", "nPos", "dTVehImp", "sexe", "edat", "dTPers", "dLlAtrVia", "dMotDesVia", "dMotDespCon", "dVict", "accbici")
 
 # Assuming merged_data is your dataframe
 names(merged_data) <- new_column_names
+
+```
+
+#Generar csv
+```{r}
+
+# Generem el csv
+attributes(merged_data)
+write.csv(merged_data, "merged_data.csv", row.names = FALSE)
 
 ```
 
@@ -226,9 +229,6 @@ fviz_mca_ind(mca_results, col.ind = "cos2", gradient.cols = c("#00AFBB", "#E7B80
 fviz_mca_var(mca_results, col.var = "cos2", gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"), repel = TRUE)
 
 ```
-
-
-
 
 ##Count the number of expedients
 ```{r}
