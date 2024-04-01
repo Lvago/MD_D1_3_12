@@ -82,11 +82,11 @@ find_duplicate_columns <- function(dataframe) {
 }
 
 # Detectar columnas con los mismos valores
-columnas_con_valores_iguales <- find_duplicate_columns(merged_data)
+#columnas_con_valores_iguales <- find_duplicate_columns(merged_data)
 
 # Imprimir el resultado
-print("Columnas con los mismos valores:")
-print(columnas_con_valores_iguales)
+#print("Columnas con los mismos valores:")
+#print(columnas_con_valores_iguales)
 
 ```
 
@@ -116,7 +116,7 @@ head(merged_data)
 ##Now we are deleting the repeated columns.
 ```{r}
 # Eliminar las columnas con los mismos valores
-merged_data <- merged_data[, !(names(merged_data) %in% columnas_con_valores_iguales)]
+#merged_data <- merged_data[, !(names(merged_data) %in% columnas_con_valores_iguales)]
 
 ```
 
@@ -144,15 +144,15 @@ merged_data <- merged_data %>%
 ### Esborrem la ultima columna problemàtica
 ```{r}
 # Assuming merged_data is your data frame
-columns_to_remove <- c("Num_postal_caption")
+colnames(merged_data)
+columns_to_remove <- c("Num_postal_caption", "NK_.Any", "Mes_.any", "NK_Any")
 merged_data <- merged_data[ , !(names(merged_data) %in% columns_to_remove)]
 ```
 
 ##Renaming de les columnes
 ```{r}
 # List of new column names
-new_column_names <- c("nExp", "cDis", "nDis", "cBar", "nBar", "cCar", "nCar", "dSet", "any", "nMes", "mes", "dia", "hora", "torn", "causa", "morts", "lesLl", "lesGr", "vict", "vehi", "UTMX", "UTMY", "long", "lat", "nPos", "dTVehImp", "sexe", "edat", "dTPers", "dLlAtrVia", "dMotDesVia", "dMotDespCon", "dVict", "accbici")
-
+new_column_names <- c("nExp", "cDis", "nDis", "cBar", "nBar", "cCar", "nCar", "dSet", "nMes", "mes", "dia", "hora", "torn", "causa", "morts", "lesLl", "lesGr", "vict", "vehi", "UTMX", "UTMY", "long", "lat", "nPos", "dTVehImp", "sexe", "edat", "dTPers", "dLlAtrVia", "dMotDesVia", "dMotDespCon", "dVict", "accbici")
 # Assuming merged_data is your dataframe
 names(merged_data) <- new_column_names
 

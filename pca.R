@@ -3,7 +3,7 @@
 #factors are properly labelled and reading data makes R to directly recognize them
 #Numerical variables do not contain missing values anymore. They have been imputed in preprocessing step
 
-dd <- read.table("merged_data.csv",header=T, sep=";");
+dd <- read.table("merged_data.csv",header=T, sep=",");
 
 objects()
 attributes(dd)
@@ -16,7 +16,7 @@ attributes(dd)
 
 # CREATION OF THE DATA FRAME OF CONTINUOUS VARIABLES
 
-attach(dd)
+#attach(dd)
 names(dd)
 
 #is R understanding well my factor variables?
@@ -29,6 +29,7 @@ numeriques<-which(sapply(dd,is.numeric))
 numeriques
 
 dcon<-dd[,numeriques]
+#dcon <- data.frame( dd$cDis, dd$cBar, dd$cCar, dd$any, dd$nMes, dd$dia, dd$hora, dd$morts, dd$lesLl, dd$lesGr, dd$vict, dd$vehi, dd$UTMX, dd$UTMY, dd$long, dd$lat, dd$nPos, dd$edat, dd$accbici)
 sapply(dcon,class)
 
 #dcon <- data.frame (Antiguedad.Trabajo,Plazo,Edad,Gastos,Ingresos,Patrimonio,Cargas.patrimoniales,Importe.solicitado,Precio.del.bien.financiado,Estalvi, RatiFin)
@@ -47,7 +48,7 @@ sapply(dcon,class)
 #the whole analysis again
 # PRINCIPAL COMPONENT ANALYSIS OF dcon
 
-pc1 <- prcomp(dcon, scale=TRUE)
+pc1<-prcomp(dcon, scale=TRUE)
 class(pc1)
 attributes(pc1)
 
