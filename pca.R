@@ -22,14 +22,14 @@ names(dd)
 #is R understanding well my factor variables?
 sapply(dd,class)
 
-  #set a list of numerical variables (with no missing values)
-
+#set a list of numerical variables (with no missing values)
 
 numeriques<-which(sapply(dd,is.numeric))
 numeriques
 
-dcon<-dd[,numeriques]
-#dcon <- data.frame( dd$cDis, dd$cBar, dd$cCar, dd$any, dd$nMes, dd$dia, dd$hora, dd$morts, dd$lesLl, dd$lesGr, dd$vict, dd$vehi, dd$UTMX, dd$UTMY, dd$long, dd$lat, dd$nPos, dd$edat, dd$accbici)
+#dcon<-dd[,numeriques] #TODO treure les varibles amb masses valors possibles com carrer o codi postal
+dd$edat <- as.numeric(dd$edat)
+dcon <- data.frame( dd$cDis, dd$cBar, dd$cCar, dd$nMes, dd$dia, dd$hora, dd$morts, dd$lesLl, dd$lesGr, dd$vict, dd$vehi, dd$UTMX, dd$UTMY, dd$long, dd$lat, dd$edat, dd$accbici)
 sapply(dcon,class)
 
 #dcon <- data.frame (Antiguedad.Trabajo,Plazo,Edad,Gastos,Ingresos,Patrimonio,Cargas.patrimoniales,Importe.solicitado,Precio.del.bien.financiado,Estalvi, RatiFin)
@@ -76,7 +76,7 @@ percInerAccum
 
 # SELECTION OF THE SINGIFICNT DIMENSIONS (keep 80% of total inertia)
 
-nd = 6
+nd = 6                                                                          # TODO que va aqui????????
 
 print(pc1)
 attributes(pc1)
@@ -168,7 +168,7 @@ axis(side=4, pos= 0, labels = F, col="darkgray")
 legend("bottomleft",levels(factor(varcat)),pch=1,col=c(1,2), cex=0.6)
 
 #select your qualitative variable
-k<-1 #dictamen in credsco
+k<-1 #dictamen in credsco                                                       # TODO dictamen???
 
 varcat<-factor(dd[,k])
 fdic1 = tapply(Psi[,eje1],varcat,mean)
@@ -265,7 +265,7 @@ legend("bottomleft",names(dd)[dcat],pch=1,col=colors, cex=0.6)
 
 #add ordinal qualitative variables. Ensure ordering is the correct
 
-dordi<-c(8)
+dordi<-c(8)                                                                     # que cojones va aqui?
 
 
 levels(factor(dd[,dordi[1]]))

@@ -123,6 +123,10 @@ head(merged_data)
 
 #In order to answer the exercice here we are obtaining the number of categoric and numeric vars.
 ```{r}
+# Canviar la variable edad a numerica
+merged_data$edat <- as.numeric(merged_data$Edat)
+merged_data$edat[merged_data$edat == "Desconegut"] <- -1
+
 # Número de variables categóricas
 num_categoricas <- sum(sapply(merged_data, is.factor) | sapply(merged_data, is.character))
 
