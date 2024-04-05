@@ -5,6 +5,11 @@
 
 dd <- read.table("merged_data.csv",header=T, sep=",");
 
+
+# ENS QUEDEM NOMES AMB ELS ACCIDENTS DE BICI
+dd <- dd[dd[, 33] == 1, ]
+rownames(dd) <- seq(length = nrow(dd))
+
 objects()
 attributes(dd)
 
@@ -29,7 +34,7 @@ numeriques
 
 #dcon<-dd[,numeriques] #TODO treure les varibles amb masses valors possibles com carrer o codi postal
 dd$edat <- as.numeric(dd$edat)
-dcon <- data.frame( dd$cDis, dd$cBar, dd$cCar, dd$nMes, dd$dia, dd$hora, dd$morts, dd$lesLl, dd$lesGr, dd$vict, dd$vehi, dd$UTMX, dd$UTMY, dd$long, dd$lat, dd$edat, dd$accbici)
+dcon <- data.frame( dd$cDis, dd$cBar, dd$cCar, dd$nMes, dd$dia, dd$hora, dd$lesLl, dd$lesGr, dd$vict, dd$vehi, dd$long, dd$lat, dd$edat)
 sapply(dcon,class)
 
 #dcon <- data.frame (Antiguedad.Trabajo,Plazo,Edad,Gastos,Ingresos,Patrimonio,Cargas.patrimoniales,Importe.solicitado,Precio.del.bien.financiado,Estalvi, RatiFin)
@@ -75,8 +80,8 @@ percInerAccum
 
 
 # SELECTION OF THE SINGIFICNT DIMENSIONS (keep 80% of total inertia)
-
-nd = 6                                                                          # TODO que va aqui????????
+# TRIEM UNA DIMENSIO PER TAL D'EXPLICAR ALMENYS UN 80% DE LA VARIANÇA -> 9 DIMENSIONS
+nd = 9
 
 print(pc1)
 attributes(pc1)
@@ -86,12 +91,12 @@ pc1$rotation
 View(pc1$x)
 dim(pc1$x)
 dim(dcon)
-dcon[2000,]
-pc1$x[2000,]
+dcon[500,]
+pc1$x[500,]
 
 Psi = pc1$x[,1:nd]
 dim(Psi)
-Psi[2000,]
+Psi[500,]
 
 # STORAGE OF LABELS FOR INDIVIDUALS AND VARIABLES
 
@@ -144,12 +149,12 @@ text(X,Y,labels=etiq,col="darkblue", cex=0.7)
 
 
 #zooms
-plot(Psi[,eje1],Psi[,eje2],type="n",xlim=c(min(X,0),max(X,0)), ylim=c(-1,1))
+plot(Psi[,eje1],Psi[,eje2],type="n",xlim=c(min(X,0),max(X,0)), ylim=c(-0.5,1))
 axis(side=1, pos= 0, labels = F)
 axis(side=3, pos= 0, labels = F)
 axis(side=2, pos= 0, labels = F)
 axis(side=4, pos= 0, labels = F)
-arrows(ze, ze, X, Y, length = 0.07,col="blue")
+arrows(ze, ze, X, Y, length = 0.07,col="lightblue")
 text(X,Y,labels=etiq,col="darkblue", cex=0.7)
 
 
@@ -157,7 +162,6 @@ text(X,Y,labels=etiq,col="darkblue", cex=0.7)
 # PROJECTION OF ILLUSTRATIVE qualitative variables on individuals' map
 # PROJECCI? OF INDIVIDUALS DIFFERENTIATING THE Dictamen
 # (we need a numeric Dictamen to color)
-
 
 varcat=factor(dd[,1])
 plot(Psi[,1],Psi[,2],col=varcat)
@@ -167,8 +171,9 @@ axis(side=2, pos= 0, labels = F, col="darkgray")
 axis(side=4, pos= 0, labels = F, col="darkgray")
 legend("bottomleft",levels(factor(varcat)),pch=1,col=c(1,2), cex=0.6)
 
+
 #select your qualitative variable
-k<-1 #dictamen in credsco                                                       # TODO dictamen???
+k<-7 #dictamen in credsco                                                       # TODO dictamen???
 
 varcat<-factor(dd[,k])
 fdic1 = tapply(Psi[,eje1],varcat,mean)
@@ -355,6 +360,7 @@ colors<-c("red", "blue", "darkgreen", "orange", "violet", "magenta", "pink")
 #represent numerical variables in background
 #plot(Psi[,eje1],Psi[,eje2],type="p",xlim=c(-1,1), ylim=c(-3,1), col="lightgray")
 plot(Psi[,eje1],Psi[,eje2],type="n",xlim=c(-1,1), ylim=c(-3,1))
+
 #plot(X,Y,type="none",xlim=c(min(X,0),max(X,0)))
 axis(side=1, pos= 0, labels = F, col="cyan")
 axis(side=3, pos= 0, labels = F, col="cyan")

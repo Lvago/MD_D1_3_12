@@ -149,7 +149,7 @@ merged_data <- merged_data %>%
 ```{r}
 # Assuming merged_data is your data frame
 colnames(merged_data)
-columns_to_remove <- c("Num_postal_caption", "NK_.Any", "Mes_.any", "NK_Any")
+columns_to_remove <- c("Num_postal_caption", "NK_.Any", "Mes_.any", "NK_Any", "edat")
 merged_data <- merged_data[ , !(names(merged_data) %in% columns_to_remove)]
 ```
 
