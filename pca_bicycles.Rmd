@@ -1,6 +1,6 @@
 ---
 title: "pca_bicycles"
-author: "Pau Cuscus"
+author: "Pau Cuscó"
 date: "2024-04-07"
 output: html_document
 ---
@@ -47,7 +47,7 @@ numeriques
 
 #dcon<-dd[,numeriques] #TODO treure les varibles amb masses valors possibles com carrer o codi postal
 dd$edat <- as.numeric(dd$edat)
-dcon <- data.frame( dd$cDis, dd$cBar, dd$cCar, dd$nMes, dd$dia, dd$hora, dd$lesLl, dd$lesGr, dd$vict, dd$vehi, dd$long, dd$lat, dd$edat)
+dcon <- data.frame( dd$lesLl, dd$lesGr, dd$vict, dd$vehi, dd$long, dd$lat, dd$edat)
 sapply(dcon,class)
 
 #dcon <- data.frame (Antiguedad.Trabajo,Plazo,Edad,Gastos,Ingresos,Patrimonio,Cargas.patrimoniales,Importe.solicitado,Precio.del.bien.financiado,Estalvi, RatiFin)
@@ -94,7 +94,7 @@ percInerAccum
 
 # SELECTION OF THE SINGIFICNT DIMENSIONS (keep 80% of total inertia)
 # TRIEM UNA DIMENSIO PER TAL D'EXPLICAR ALMENYS UN 80% DE LA VARIANÇA -> 9 DIMENSIONS
-nd = 9
+nd = 4
 
 print(pc1)
 attributes(pc1)
@@ -386,7 +386,7 @@ text(X,Y,labels=etiq,col="gray", cex=0.7)
 
 #numerical variables of financial situation
 
-seleccio<-c(4:7,10)
+seleccio<-c(4:6,7)
 dconMapa1<-dcon[,seleccio]
 
 #referencia general comu a tots els mapes
