@@ -1,4 +1,3 @@
-
 #PREREQUISITES: 
 #factors are properly labelled and reading data makes R to directly recognize them
 #Numerical variables do not contain missing values anymore. They have been imputed in preprocessing step
@@ -7,6 +6,7 @@ dd <- read.table("merged_data.csv",header=T, sep=",");
 
 
 # ENS QUEDEM NOMES AMB ELS ACCIDENTS DE BICI
+
 dd <- dd[dd[, 33] == 1, ]
 rownames(dd) <- seq(length = nrow(dd))
 
@@ -163,7 +163,7 @@ text(X,Y,labels=etiq,col="darkblue", cex=0.7)
 # PROJECCI? OF INDIVIDUALS DIFFERENTIATING THE Dictamen
 # (we need a numeric Dictamen to color)
 
-varcat=factor(dd[,1])
+varcat=factor(dd[,3])
 plot(Psi[,1],Psi[,2],col=varcat)
 axis(side=1, pos= 0, labels = F, col="darkgray")
 axis(side=3, pos= 0, labels = F, col="darkgray")

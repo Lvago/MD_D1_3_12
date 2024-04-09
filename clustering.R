@@ -23,7 +23,7 @@ dim(dcon)
 # CLUSTERING
 # KMEANS RUN, BUT HOW MANY CLASSES?
 
-k1 <- kmeans(dcon,3)
+k1 <- kmeans(dcon,2)
 names(dcon)
 print(k1)
 
@@ -54,7 +54,7 @@ Ib1
 
 # LETS REPEAT THE KMEANS RUN WITH K=5
 
-k2 <- kmeans(dcon,5)
+k2 <- kmeans(dcon,4)
 k2$size
 
 Bss <- sum(rowSums(k2$centers^2)*k2$size)
@@ -68,6 +68,8 @@ Ib1
 
 k2$centers
 k1$centers
+
+k1<-k2
 
 plot(k1$centers[,3],k1$centers[,2])
 
@@ -90,8 +92,6 @@ Ib3
 
 
 
-
-
 # HIERARCHICAL CLUSTERING
 
 d  <- dist(dcon[1:50,])
@@ -106,14 +106,14 @@ plot(h1)
 
 # WHERE ARE THER THE LEAPS? WHERE WILL YOU CUT THE DENDREOGRAM?, HOW MANY CLASSES WILL YOU OBTAIN?
 
-# DECIDIR SI 3 o 4 a partir del cluster dendorgram
-nc = 3
+# DECIDIR SI 2 o 3 a partir del cluster dendorgram
+nc = 2
 
 c1 <- cutree(h1,nc)
 
 c1[1:20]
 
-nc = 5
+nc = 4
 
 c5 <- cutree(h1,nc)
 
@@ -124,10 +124,13 @@ table(c1)
 table(c5)
 table(c1,c5)
 
-cdg <- aggregate(as.data.frame(dcon),list(c1),mean)
+
+length(dcon)
+list(c1)
+cdg <- aggregate(as.data.frame(dcon),list(c5),mean)
 cdg
 
-plot(cdg[,1], cdg[,7])
+plot(cdg[,1], cdg[,9])
 
 
 
@@ -136,17 +139,22 @@ plot(cdg[,1], cdg[,7])
 
 # dd$cDis, dd$nMes, dd$hora, dd$lesLl, dd$lesGr, dd$vict, dd$vehi, dd$long, dd$lat
 
-plot(nDis,nMes,col=c1,main="Clustering of credit data in 3 classes")
-dlegend("topright",c("class1","class2","class3"),pch=1,col=c(1:3))
-  
-plot(nDis,hora,col=c1,main="Clustering of credit data in 3 classes")
-legend("topright",c("class1","class2","class3"),pch=1,col=c(1:3), cex=0.6)
+plot(hora,cDis,col=c1,main="Clustering of credit data in 2 classes")
+legend("topleft",c("class1","class2"),pch=1,col=c(1:2), cex=0.6)
 
-plot(nDis,lesGr,col=c1,main="Clustering of credit data in 3 classes")
+plot(hora,cDis,col=c5,main="Clustering of credit data in 4 classes")
+legend("topleft",c("class1","class2","class3","class4"),pch=1,col=c(1:4), cex=0.6)
+
+plot(hora,nMes,col=c5,main="Clustering of credit data in 4 classes")
+legend("topright",c("class1","class2","class3","class4"),pch=1,col=c(1:4), cex=0.6)
+
+plot(cBar, lesGr,col=c5,main="Clustering of credit data in 4 classes")
+legend("topright",c("class1","class2","class3","class4"),pch=1,col=c(1:4), cex=0.6)
+
+
+plot(nDis, vict,col=c1,main="Clustering of credit data in 3 classes")
 legend("topright",c("class1","class2","class3"),pch=1,col=c(1:3), cex=0.6)
-plot(Patrimonio, Ingresos,col=c1,main="Clustering of credit data in 3 classes")
-legend("topright",c("class1","class2","class3"),pch=1,col=c(1:3), cex=0.6)
-plot(Patrimonio, Antiguedad.Trabajo,col=c1,main="Clustering of credit data in 3 classes")
+plot(sexe, mes,col=c1,main="Clustering of credit data in 3 classes")
 legend("topright",c("class1","class2","class3"),pch=1,col=c(1:3), cex=0.6)
 
 pairs(dcon[,1:7], col=c1)

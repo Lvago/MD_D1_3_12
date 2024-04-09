@@ -1,3 +1,8 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
 #Retrieve the data saved AFTER the profiling practice...... this means data already cleaned
 ```{r}
 dd <- read.table("merged_data.csv",header=T, sep=",");
@@ -9,7 +14,6 @@ names(dd)
 dim(dd)
 summary(dd)
 
-detach(dd)
 attach(dd)
 
 #set a list of numerical variables
@@ -134,8 +138,9 @@ plot(cdg[,1], cdg[,7])
 ```{r}
 # LETS SEE THE PARTITION VISUALLY
 
+# dd$cDis, dd$nMes, dd$hora, dd$lesLl, dd$lesGr, dd$vict, dd$vehi, dd$long, dd$lat
 
-plot(Edad,Estalvi,col=c1,main="Clustering of credit data in 3 classes")
+plot(nDis,hora,col=c1,main="Clustering of credit data in 3 classes")
 legend("topright",c("class1","class2","class3"),pch=1,col=c(1:3))
 
 
