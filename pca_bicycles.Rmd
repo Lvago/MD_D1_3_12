@@ -3,6 +3,8 @@ title: "pca_bicycles"
 author: "Pau Cuscó"
 date: "2024-04-07"
 output: html_document
+editor_options: 
+  chunk_output_type: inline
 ---
 
 ```{r setup, include=FALSE}
@@ -47,7 +49,7 @@ numeriques
 
 #dcon<-dd[,numeriques] #TODO treure les varibles amb masses valors possibles com carrer o codi postal
 dd$edat <- as.numeric(dd$edat)
-dcon <- data.frame( dd$lesLl, dd$lesGr, dd$vict, dd$vehi, dd$long, dd$lat, dd$edat)
+dcon <- data.frame( dd$lesLl, dd$lesGr, dd$vict, dd$vehi, dd$edat)
 sapply(dcon,class)
 
 #dcon <- data.frame (Antiguedad.Trabajo,Plazo,Edad,Gastos,Ingresos,Patrimonio,Cargas.patrimoniales,Importe.solicitado,Precio.del.bien.financiado,Estalvi, RatiFin)
