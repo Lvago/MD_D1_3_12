@@ -151,18 +151,18 @@ plot(cdg[,1], cdg[,9])
 plot(hora,edat,col=c1,main="Clustering of bicycle accidents in 2 classes")
 legend("topleft",c("class1","class2"),pch=1,col=c(1:2), cex=0.6)
 
-plot(hora,edat,col=c5,main="Clustering of bicycle accidents in 2 classes")
+plot(hora,edat,col=c5,main="Clustering of bicycle accidents in 4 classes")
 legend("topleft",c("class1","class2","class3","class4"),pch=1,col=c(1:4), cex=0.6)
 
-plot(nMes,hora,col=c5,main="Clustering of credit data in 4 classes")
+plot(cDis,edat,col=c5,main="Clustering of credit data in 4 classes")
 legend("topright",c("class1","class2","class3","class4"),pch=1,col=c(1:4), cex=0.6)
 
 plot(cBar, lesGr,col=c5,main="Clustering of credit data in 4 classes")
 legend("topright",c("class1","class2","class3","class4"),pch=1,col=c(1:4), cex=0.6)
 
 
-plot(nDis, vict,col=c1,main="Clustering of credit data in 3 classes")
-legend("topright",c("class1","class2","class3"),pch=1,col=c(1:3), cex=0.6)
+plot(edat, cDis,col=c5,main="Clustering of bicycle accidents in 4 classes")
+legend("topright",c("class1","class2","class3","class4"),pch=1,col=c(1:4), cex=0.6)
 plot(sexe, mes,col=c1,main="Clustering of credit data in 3 classes")
 legend("topright",c("class1","class2","class3"),pch=1,col=c(1:3), cex=0.6)
 
